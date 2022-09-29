@@ -4,6 +4,7 @@ version = "0.1.2"
 edition = "2021"
 description = "A simple entity-component library (not an ECS library!) for small projects."
 license = "MIT"
+repository = "https://github.com/marciorvneto/enco"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
