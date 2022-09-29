@@ -8,7 +8,7 @@ Having said that, it is very straightforward to use.
 
 ## Basic usage
 
-Entities are referred to as Elements and live in a `World`.
+Entities live in a `World`, which serves as an api for modifying them.
 
 Entities can be given components, which can be of any type.
 
@@ -30,27 +30,27 @@ struct TagComponent {
 
 let mut world = World::new();
 
-// Creating entities (elements)
+// Creating entities
 
-let element_id = world
-         .create_element()
+let entity_id = world
+         .create_entity()
          .with(PositionComponent{x: 0, y: 0})
-         .with(TagComponent{tag: "First element".to_string()})
+         .with(TagComponent{tag: "First entity".to_string()})
          .done();
 
-// Entity components can be accessed through the element id
+// Entity components can be accessed through the entity id
 
 let tag_component = world
-    .get_element_component::<TagComponent>(&element_id)
+    .get_entity_component::<TagComponent>(&entity_id)
     .unwrap();
 
 // Entity components can be deleted
 
 let tag_component = world
-    .delete_element_component::<TagComponent>(&element_id)
+    .delete_entity_component::<TagComponent>(&entity_id)
     .unwrap();
 
 // Entities themselves can be deleted
 
-world.delete_element(&element_id).unwrap();
+world.delete_entity(&entity_id).unwrap();
 ```
