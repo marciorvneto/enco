@@ -102,6 +102,74 @@ mod tests {
     }
 
     #[test]
+    pub fn filter_entities() -> Result<(), WorldError> {
+        let mut world = World::new();
+
+        world.create_entity().with(NodeDrawingComponent(1)).done();
+        world.create_entity().with(NodeDrawingComponent(2)).done();
+        world
+            .create_entity()
+            .with(ConnectorDrawingComponent(1))
+            .done();
+        world
+            .create_entity()
+            .with(ConnectorDrawingComponent(2))
+            .done();
+        world.create_entity().with(NodeDrawingComponent(3)).done();
+
+        let query = world.query::<NodeDrawingComponent>();
+        let mut sz_1 = 0;
+        for _value in query {
+            sz_1 += 1;
+        }
+        assert_eq!(sz_1, 3);
+
+        let query = world.query::<ConnectorDrawingComponent>();
+        let mut sz_2 = 0;
+        for _value in query {
+            sz_2 += 1;
+        }
+        assert_eq!(sz_2, 2);
+
+        Ok(())
+    }
+
+    #[test]
+    pub fn filter_entities_mut() -> Result<(), WorldError> {
+        let mut world = World::new();
+
+        world.create_entity().with(NodeDrawingComponent(1)).done();
+        world.create_entity().with(NodeDrawingComponent(2)).done();
+        world
+            .create_entity()
+            .with(ConnectorDrawingComponent(1))
+            .done();
+        world
+            .create_entity()
+            .with(ConnectorDrawingComponent(2))
+            .done();
+        world.create_entity().with(NodeDrawingComponent(3)).done();
+
+        let query = world.query_mut::<NodeDrawingComponent>();
+        let mut sz_1 = 0;
+        for value in query {
+            value.0 += 10;
+            sz_1 += 1;
+        }
+        assert_eq!(sz_1, 3);
+
+        let query = world.query_mut::<ConnectorDrawingComponent>();
+        let mut sz_2 = 0;
+        for value in query {
+            value.0 += 10;
+            sz_2 += 1;
+        }
+        assert_eq!(sz_2, 2);
+
+        Ok(())
+    }
+
+    #[test]
     pub fn add_component_to_entity() -> Result<(), WorldError> {
         let mut world = World::new();
 

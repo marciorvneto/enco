@@ -1,5 +1,6 @@
 use std::{
     any::{Any, TypeId},
+    borrow::BorrowMut,
     collections::HashMap,
 };
 
@@ -61,6 +62,29 @@ impl World {
             return Ok(components.len());
         }
         Err(WorldError::EntityDoesNotExist)
+    }
+
+    pub fn query<T: Any>(&self) -> impl Iterator<Item = &T> {
+        let query = self
+            .entity_components
+            .iter()
+            .filter_map(|(entity_id, _components)| {
+                let component_option = self.get_entity_component::<T>(entity_id);
+                component_option
+            });
+        query
+    }
+
+    pub fn query_mut<T: Any>(&mut self) -> impl Iterator<Item = &mut T> {
+        let self_ptr = self as *mut Self;
+        let query =
+            self.entity_components
+                .iter_mut()
+                .filter_map(move |(entity_id, _components)| unsafe {
+                    let component_option = (*self_ptr).get_entity_component_mut::<T>(entity_id);
+                    component_option
+                });
+        query
     }
 
     ///
